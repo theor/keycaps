@@ -33,23 +33,23 @@ $fn=90;
 include <layout.scad>
 
 
-module lpx(){
-    rotate([0,0,90])
-    import("./Key.stl",$fa=1,center=true);
+module lpx(is_thumb){
+    rotate([0,0,is_thumb ? 0 : 90])
+    import(is_thumb ? "1.5u.stl" : "./1u.stl",$fa=1,center=true);
 }
 
 module bottomFillet(){
+    rotate([0,0,0])
     #translate([10,0,-1.4])
     rotate([0,fillet_angle,0])
-    cube([4,20,10], center=true);
+    cube([4,30,10], center=true);
 }
 
 module keycap(text, is_thumb){
     rotate([0,$preview && !angled_preview ? 0 : -(90-fillet_angle),$preview ? 0 : -45])
     union(){
-        scale([1  ,is_thumb ? 1.5 : 1   ,1])
         difference() {
-            lpx();
+            lpx(is_thumb);
             // both angled fillets. one is used to lay on the 3d printer bed
            bottomFillet();
            mirror([1,0,0])
@@ -59,7 +59,7 @@ module keycap(text, is_thumb){
             translate([0,0,-.5])
             difference() {
                 #labels(text);
-                lpx();
+                lpx(is_thumb);
             }
         }
     }
