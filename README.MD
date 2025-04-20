@@ -10,6 +10,8 @@
 
 read the code for details on the input format and how the labeling works.
 
+you might need to adjust the font - the code references `JetBrainsMono Nerd Font`. openscad has a Font List panel where you can test a font's support for specific characters.
+
 The keycap model itself is a reimplementation in Onshape of the great KEA caps : https://github.com/klouderone/KEA-choc-keycaps
 
 Before KEA I used LPX, another great opensource keycap: https://github.com/levpopov/LPX
