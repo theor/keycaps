@@ -6,7 +6,7 @@
 
 > use the nightky build of openscad with the manifold backend, which is so much faster than the old CGAL backend
 
-`keycaps.scad` takes pre-existing single keycap meshes (here `1u.stl` and `1.5u.stl`), a layout describing multiple keys (see `layout.cad`), then instantiate and label each key. it also add a bevel on the rear sides and rotates the key on it for 3d printing.
+`keycaps.scad` takes pre-existing single keycap meshes (here `1u.stl` and `1.5u.stl`), a layout describing multiple keys (see `layout.cad`), then instantiate and label each key, and optionally adds a homing bump. it also add a bevel on the rear sides and rotates the key on it for 3d printing.
 
 ![images/openscad_oI7rFk1AJP.png](images/openscad_oI7rFk1AJP.png)
 

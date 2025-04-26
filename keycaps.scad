@@ -1,11 +1,14 @@
 angled_preview = true;
 preview_positions = false;
 use_layout_positions = false;
+single_key_preview_index = 0;
 
 // not the actual dimensions of the keycap, remnant of earlier iterations
 keycap_width = 18.0;
 keycap_depth = 18.0;
 keycap_height = 2.0;
+
+/* [Labels] */
 
 font="JetBrainsMono Nerd Font:style=Regular";
 
@@ -21,12 +24,18 @@ label_offset_y = -1.8; // [-10:0.1:10]
 
 fillet_angle=48;
 
-text = ["Q", "1", "F2", "",""];
+// text = ["Q", "1", "F2", "",""];
 $fn=90;
+
+/* [Homing] */
+enable_homing = true;
+homing_radius = 1.2;
+
 
 // contains one variable
 // keys = [
-//   [[top left, top right, bottom left, bottom right, center], is 1.5U],
+//   [[top left, top right, bottom left, bottom right, center], is 1.5U, is homing key, [x,y]],
+//   the position, if use_layout_positions is true, is used for positioning the keycap
 //   [["Q", "1", "!", "↞"], false],
 //   [["␣", "", "", ""], true],
 //   [["", "", "", "", "II"], false],
@@ -46,9 +55,17 @@ module bottomFillet(){
     cube([4,30,10], center=true);
 }
 
-module keycap(text, is_thumb){
+module homing(){
+    #translate([0,0,1.2]) 
+    sphere(r = homing_radius);
+}
+
+module keycap(text, is_thumb, has_homing){
     rotate([0,$preview && !angled_preview ? 0 : -(90-fillet_angle),$preview ? 0 : -45])
     union(){
+        if(has_homing){
+            homing();
+        }
         difference() {
             lpx(is_thumb);
             // both angled fillets. one is used to lay on the 3d printer bed
@@ -73,7 +90,7 @@ union(){
         key = keys[k];
         if(len(key[0]) != 0){
             p = use_layout_positions
-                ? inv_1(key[2] * keycap_width*1.3)
+                ? inv_1(key[3] * keycap_width*1.3)
                 : [k*keycap_width*1.3,0];
             
             //    just a cube to help setting the layout
@@ -82,9 +99,9 @@ union(){
             }
             else{
                 // in preview mode, render only the first key
-                if(!$preview || k == 0)
+                if(!$preview || k == single_key_preview_index)
                     translate(p)
-                        keycap(key[0], key[1]);
+                        keycap(key[0], key[1], key[2]);
             }
         }
     }
