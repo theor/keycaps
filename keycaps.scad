@@ -1,5 +1,6 @@
 angled_preview = true;
 preview_positions = false;
+use_layout_positions = false;
 
 // not the actual dimensions of the keycap, remnant of earlier iterations
 keycap_width = 18.0;
@@ -71,11 +72,10 @@ union(){
     for(k = [0:len(keys)-1]) {
         key = keys[k];
         if(len(key[0]) != 0){
-            first = k < half ? 0 : half;
-            x = (k-first)%side;
-            p = [k < half
-                ? x : (2*side - x), -floor((k-first) / side)] * keycap_width*1.3
-               ;
+            p = use_layout_positions
+                ? inv_1(key[2] * keycap_width*1.3)
+                : [k*keycap_width*1.3,0];
+            
             //    just a cube to help setting the layout
             if($preview && preview_positions){
                 translate(p) cube(keycap_width);
@@ -89,6 +89,8 @@ union(){
         }
     }
 }
+
+function inv_1(x) = [x[0], -x[1]];
 
 module labels(text){
     union() {
